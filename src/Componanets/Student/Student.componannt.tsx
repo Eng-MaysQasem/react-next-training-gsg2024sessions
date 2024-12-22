@@ -3,8 +3,8 @@ const Student = ()=>{
     return (
     <div className='std-wrapper'>
   
-    <h3>Mays Qasem</h3git init
->
+    <h3>Mays Qasem</h3>
+
     <hr/>
     </div>)
   
