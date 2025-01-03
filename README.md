@@ -12,6 +12,9 @@ This repository is part of the React & Next.js training sessions at GSG for 2024
   - Setting up the environment.
   - Creating React components.
   - Basic JSX syntax.
+  - useState&complex state.
+  - Props.
+  - Events.
 
 ---
 
