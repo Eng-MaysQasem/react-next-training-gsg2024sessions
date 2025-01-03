@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CoursesList from '../CoursesList/CoursesList.Componants';
 import'./Student.css'
+import { Istudent } from '../../types';
 interface IProps{
   name:string;
   age:number;
@@ -13,6 +14,13 @@ const Student = (props:IProps)=>{
   const addAbsent=()=>{
     setAbs(abs+1);
   }
+  const removAbsent=()=>{
+    setAbs(abs-1);
+  }
+  const RestAbsent=()=>{
+    setAbs(0);
+  }
+  
     return (
       <div className='std-wrapper'>
       <p>
@@ -27,7 +35,11 @@ const Student = (props:IProps)=>{
       <p>
         <div className="label">Absents:</div> {abs}
       </p>
-      <button onClick={addAbsent}>Add Absent</button>
+      <button onClick={addAbsent}>+</button>
+
+      <button onClick={RestAbsent}>Rest Absent</button>
+      <button onClick={removAbsent}>-</button>
+
       <CoursesList list={props.list} />
       <hr />
     </div>
