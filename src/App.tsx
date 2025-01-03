@@ -10,7 +10,7 @@ const studentsList: Array<Istudent> = [
     name: "Mays Qasem",
     age: 23,
     isGraduate: true,
-    courseList: CoursesList,
+    courseList:['e1','e2','a1','a3'],
   },
   {
     id: "2",
@@ -24,6 +24,13 @@ const studentsList: Array<Istudent> = [
     name: "Sama Qasem",
     age: 16,
     isGraduate: false,
+    courseList: ['css','e2'],
+  },
+  {
+    id: "4",
+    name: "Rahaf Qasem",
+    age: 81,
+    isGraduate: !false,
     courseList: CoursesList,
   },
 ];
