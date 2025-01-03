@@ -1,15 +1,14 @@
-.std-wrapper{
-    background-color: #9f9f9f;
+.std-wrapper {
+  background-color: #9f9f9f;
 }
 .label {
-    font-weight: bold;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  button{
-    margin: 5px 20px;
-    background-color: gainsboro;
-  }
-  
+  font-weight: bold;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+button {
+  margin: 5px 20px;
+  background-color: gainsboro;
+}
