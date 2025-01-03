@@ -5,25 +5,17 @@ This repository is part of the React & Next.js training sessions at GSG for 2024
 
 ---
 
-## Sessions Overview
-
-### Session 1: Initial Setup and Components
-- **Topics:**
+ **Topics:**
   - Setting up the environment.
   - Creating React components.
   - Basic JSX syntax.
+  - Passing data between components using props.
+  - Handling dynamic data with React.
   - useState&complex state.
-  - Props.
   - Events.
 
 ---
 
-### Session 2: Props and Data Binding
-- **Topics:**
-  - Passing data between components using props.
-  - Handling dynamic data with React.
-
----
 
 ## How to Run the Project
 
