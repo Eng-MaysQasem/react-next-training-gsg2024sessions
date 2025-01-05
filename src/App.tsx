@@ -46,17 +46,24 @@ interface Istudent {
 
 function App() {
   const [studentsList, setStudentsList] = useState<Istudent[]>(Initaial_List);
+  const[totalAbsent,setTotalAbsent]=useState(0);
   const removeLast = () => {
     const newList = [...studentsList]; //shallow copy
     newList.pop();
     //newList.shift(); to remove first
     setStudentsList(newList);
   };
+  const handelAbsentChange=(name:string ,abs:number)=>{
+    console.log("[App.tsx]absent changed");
+    console.log(`${name}:${abs}`);
+    setTotalAbsent(totalAbsent+abs);
+  }
 
   return (
     <>
       <h1>Welcome to GSG course</h1>
       <button onClick={removeLast}>Remove Last Student</button>
+      <b>totalAbsent{totalAbsent}</b>
       {studentsList.map((student) => (
         <Student
           key={student.id}
@@ -64,6 +71,7 @@ function App() {
           age={student.age}
           isGraduate={student.isGraduate}
           list={student.courseList}
+          onAbsentChange={handelAbsentChange}
         />
       ))}
     </>

@@ -6,19 +6,23 @@ interface IProps{
   name:string;
   age:number;
   isGraduate:boolean;
-  list:string[]
+  list:string[],
+  onAbsentChange:(name:string ,abs:number)=>void;
 }
 const Student = (props:IProps)=>{
   //let abs=0;
   const[abs,setAbs]=useState(0);
   const addAbsent=()=>{
     setAbs(abs+1);
+    props.onAbsentChange(props.name, +1);
   }
   const removAbsent=()=>{
     setAbs(abs-1);
+    props.onAbsentChange(props.name, - 1);
   }
   const RestAbsent=()=>{
     setAbs(0);
+    props.onAbsentChange(props.name,-abs);
   }
   
     return (
