@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Student from "./Componanets/Student/Student.componannt";
 import { Istudent } from "./types";
+import AddForm from "./Componanets/AddForm/AddFormCommponants";
 
 const CoursesList = ["React", "HTML", "CSS"];
 
@@ -62,8 +63,10 @@ function App() {
   return (
     <>
       <h1>Welcome to GSG course</h1>
+      <AddForm />
       <button onClick={removeLast}>Remove Last Student</button>
       <b>totalAbsent{totalAbsent}</b>
+   
       {studentsList.map((student) => (
         <Student
           key={student.id}
