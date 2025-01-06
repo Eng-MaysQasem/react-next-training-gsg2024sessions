@@ -1,34 +1,53 @@
 import { useState } from "react";
 import "./AddForm.css";
+import { Istudent } from "../../types";
+
 const AddForm = () => {
-    const[name,setName]=useState<string>("");
-    const[age,setAge]=useState<number>(0);
-    const[graduate,setGraduate]=useState<boolean>(false);
-    const handelNamechange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-     setName(e.target.value);
-    }
-    const handelAgechange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-        setAge(Number(e.target.value));
-       }
-       const handelGraduatechange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-        setGraduate(e.target.checked);
-       }
+  const [student, setStudent] = useState<Istudent>({
+    id: "",
+    name: "",
+    age: 0,
+    isGraduate: false,
+    courseList: [],
+  });
+
+  const handelChange = (field: keyof Istudent, value: any) => {
+    setStudent({ ...student, [field]: value });
+  };
+
   return (
     <div>
       <div>
         <label htmlFor="name">Student Name:</label>
-        <input id="name" type="text" onChange={handelNamechange} />
+        <input
+          id="name"
+          type="text"
+          value={student.name}
+          onChange={(e) => handelChange("name", e.target.value)}
+        />
       </div>
       <div>
         <label htmlFor="age">Student Age:</label>
-        <input id="age" type="number"max={30} min={17} onChange={handelAgechange} />
+        <input
+          id="age"
+          type="number"
+          max={30}
+          min={17}
+          value={student.age}
+          onChange={(e) => handelChange("age", Number(e.target.value))}
+        />
       </div>
-   
       <div>
-        <label htmlFor="Graduate">Student Graduate:</label>
-        <input id="Graduate" type="checkbox" onChange={handelGraduatechange}/>
+        <label htmlFor="isGraduate">Student Graduate:</label>
+        <input
+          id="isGraduate"
+          type="checkbox"
+          checked={student.isGraduate}
+          onChange={(e) => handelChange("isGraduate", e.target.checked)}
+        />
       </div>
     </div>
   );
 };
+
 export default AddForm;
