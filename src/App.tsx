@@ -59,11 +59,16 @@ function App() {
     console.log(`${name}:${abs}`);
     setTotalAbsent(totalAbsent+abs);
   }
+  const Handeladdstudent=(newStudent:Istudent)=>{
+   // console.log(newStudent)
+    setStudentsList([newStudent,...studentsList]);
+
+  }
 
   return (
     <>
       <h1>Welcome to GSG course</h1>
-      <AddForm />
+      <AddForm  onSubmit={Handeladdstudent}/>
       <button onClick={removeLast}>Remove Last Student</button>
       <b>totalAbsent{totalAbsent}</b>
    

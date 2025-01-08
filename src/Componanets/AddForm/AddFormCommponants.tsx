@@ -1,8 +1,12 @@
 import { useState } from "react";
 import "./AddForm.css";
 import { Istudent } from "../../types";
+import { date } from "joi";
+interface Iprops{
+  onSubmit:(std:Istudent)=>void;
+}
 
-const AddForm = () => {
+const AddForm = (props:Iprops) => {
   const [student, setStudent] = useState<Istudent>({
     id: "",
     name: "",
@@ -14,7 +18,11 @@ const AddForm = () => {
   const handelChange = (field: keyof Istudent, value: any) => {
     setStudent({ ...student, [field]: value });
   };
-
+  const handelSubmit=()=>{
+    const newStudent:Istudent={...student,id:Date.now().toString()}
+    props.onSubmit(student);
+    
+  }
   return (
     <div>
       <div>
@@ -45,6 +53,11 @@ const AddForm = () => {
           checked={student.isGraduate}
           onChange={(e) => handelChange("isGraduate", e.target.checked)}
         />
+      </div>
+      <div className="Actions">
+      <button onClick={handelSubmit}>Submit</button>
+
+        <button>Clear</button>
       </div>
     </div>
   );
