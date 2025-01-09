@@ -38,7 +38,7 @@ const AddForm = (props: Iprops) => {
 
 
   return (
-    <div>
+    <div className="container">
       <div>
         <label htmlFor="name">Student Name:</label>
         <input

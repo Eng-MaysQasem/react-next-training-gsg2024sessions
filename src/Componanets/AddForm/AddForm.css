@@ -1,57 +1,64 @@
-/* AddForm.css */
 .container {
+    background-color: #f9f9f9dd;
     padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 30px auto;
+    font-family: Arial, sans-serif;
   }
   
-  .container label {
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  form div {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
     font-weight: bold;
     margin-bottom: 5px;
-    display: block;
-    color: #333;
   }
   
-  .container input[type="text"],
-  .container input[type="number"],
-  .container input[type="checkbox"] {
-    display: block;
+  input[type="text"],
+  input[type="number"],
+  input[type="checkbox"] {
     width: 100%;
-    margin-bottom: 15px;
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 14px;
   }
   
-  .container .Actions {
-    display: flex;
-    justify-content: space-between;
+  input[type="checkbox"] {
+    width: auto;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .Actions {
+    text-align: center;
     margin-top: 20px;
   }
   
-  .container button {
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .container button:first-of-type {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .container button:last-of-type {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .container button:hover {
-    opacity: 0.9;
+  .CoursesListForm {
+    margin-top: 20px;
   }
   
