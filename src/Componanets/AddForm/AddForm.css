@@ -1,0 +1,57 @@
+/* AddForm.css */
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+  }
+  
+  .container input[type="text"],
+  .container input[type="number"],
+  .container input[type="checkbox"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .container .Actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .container button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .container button:first-of-type {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .container button:last-of-type {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .container button:hover {
+    opacity: 0.9;
+  }
+  

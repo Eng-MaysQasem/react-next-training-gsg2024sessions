@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./AddForm.css";
 import { Istudent } from "../../types";
+import CoursesListForm from "../Courses-ListForm/CoursesListForm.componants";
+
 
 interface Iprops {
   onSubmit: (std: Istudent) => void;
@@ -28,6 +30,12 @@ const AddForm = (props: Iprops) => {
   const handelClear = () => {
     setStudent({ id: "", name: "", age: 0, isGraduate: false, courseList: [] });
   };
+  const handelCoursesChange = (courseList: string[]) => {
+    setStudent({ ...student, courseList });
+  };
+   
+  
+
 
   return (
     <div>
@@ -60,6 +68,7 @@ const AddForm = (props: Iprops) => {
           onChange={(e) => handelChange("isGraduate", e.target.checked)}
         />
       </div>
+      <div><CoursesListForm onSubmit={handelCoursesChange}/></div>
       <div className="Actions">
         <button onClick={handelSubmit}>Submit</button>
         <button onClick={handelClear}>Clear</button>
