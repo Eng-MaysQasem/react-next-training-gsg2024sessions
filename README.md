@@ -13,6 +13,8 @@ This repository is part of the React & Next.js training sessions at GSG for 2024
   - Handling dynamic data with React.
   - useState&complex state.
   - Events.
+  - Form Handling.
+  - Controlled vs Uncontrolled Components in ReactJS
 
 ---
 
