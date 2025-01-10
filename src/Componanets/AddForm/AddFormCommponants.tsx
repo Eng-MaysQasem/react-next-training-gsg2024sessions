@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./AddForm.css";
 import { Istudent } from "../../types";
 import CoursesListForm from "../Courses-ListForm/CoursesListForm.componants";
+import {validateStudent} from '../../ulills/Validation';
 
 
 interface Iprops {
@@ -16,16 +17,27 @@ const AddForm = (props: Iprops) => {
     isGraduate: false,
     courseList: [],
   });
+  const [errorList,setErrorList]=useState<string []>([]);
 
   const handelChange = (field: keyof Istudent, value: any) => {
     setStudent({ ...student, [field]: value });
   };
 
   const handelSubmit = () => {
+  
+   
     const newStudent: Istudent = { ...student, id: Date.now().toString() };
+    const errors= validateStudent(newStudent);
+    
+    if(errors.length>0){
+    
+      setErrorList(errors);
+  }
+  else{
+    setErrorList([])
     props.onSubmit(newStudent);
-    handelClear();
-  };
+    handelClear();}
+  }
 
   const handelClear = () => {
     setStudent({ id: "", name: "", age: 0, isGraduate: false, courseList: [] });
@@ -73,6 +85,17 @@ const AddForm = (props: Iprops) => {
         <button onClick={handelSubmit}>Submit</button>
         <button onClick={handelClear}>Clear</button>
       </div>
+      {
+        errorList.length>0?
+        <div>
+          <h4>you have the following errors</h4>
+          {
+            errorList.map(error=><p key={error}>{error}</p>)
+            
+          }
+        </div>
+       :null
+      }
     </div>
   );
 };
