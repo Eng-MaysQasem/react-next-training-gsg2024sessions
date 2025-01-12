@@ -16,6 +16,7 @@ This repository is part of the React & Next.js training sessions at GSG for 2024
   - Form Handling.
   - Controlled vs Uncontrolled Components in ReactJS.
   - Form Validation.
+  - Conditional Rendering.
 
 ---
 
