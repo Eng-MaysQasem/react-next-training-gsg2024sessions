@@ -2,8 +2,7 @@ import { useState } from "react";
 import "./AddForm.css";
 import { Istudent } from "../../types";
 import CoursesListForm from "../Courses-ListForm/CoursesListForm.componants";
-import {validateStudent} from '../../ulills/Validation';
-
+import { validateStudent } from "../../ulills/Validation";
 
 interface Iprops {
   onSubmit: (std: Istudent) => void;
@@ -17,27 +16,24 @@ const AddForm = (props: Iprops) => {
     isGraduate: false,
     courseList: [],
   });
-  const [errorList,setErrorList]=useState<string []>([]);
+  const [errorList, setErrorList] = useState<string[]>([]);
 
   const handelChange = (field: keyof Istudent, value: any) => {
     setStudent({ ...student, [field]: value });
   };
 
   const handelSubmit = () => {
-  
-   
     const newStudent: Istudent = { ...student, id: Date.now().toString() };
-    const errors= validateStudent(newStudent);
-    
-    if(errors.length>0){
-    
+    const errors = validateStudent(newStudent);
+
+    if (errors.length > 0) {
       setErrorList(errors);
-  }
-  else{
-    setErrorList([])
-    props.onSubmit(newStudent);
-    handelClear();}
-  }
+    } else {
+      setErrorList([]);
+      props.onSubmit(newStudent);
+      handelClear();
+    }
+  };
 
   const handelClear = () => {
     setStudent({ id: "", name: "", age: 0, isGraduate: false, courseList: [] });
@@ -45,11 +41,7 @@ const AddForm = (props: Iprops) => {
   const handelCoursesChange = (courseList: string[]) => {
     setStudent({ ...student, courseList });
   };
-   
-  
-
-
-  return (
+return (
     <div className="container">
       <div>
         <label htmlFor="name">Student Name:</label>
@@ -80,24 +72,25 @@ const AddForm = (props: Iprops) => {
           onChange={(e) => handelChange("isGraduate", e.target.checked)}
         />
       </div>
-      <div><CoursesListForm onSubmit={handelCoursesChange}/></div>
+      <div>
+        <CoursesListForm onSubmit={handelCoursesChange} />
+      </div>
       <div className="Actions">
         <button onClick={handelSubmit}>Submit</button>
         <button onClick={handelClear}>Clear</button>
       </div>
-      {
-        errorList.length>0?
+      
+      {Boolean(errorList.length) && (
         <div>
-          <h4>you have the following errors</h4>
-          {
-            errorList.map(error=><p key={error}>{error}</p>)
-            
-          }
+          <h4>You have the following errors:</h4>
+          {errorList.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
         </div>
-       :null
-      }
+      )}
     </div>
   );
 };
 
 export default AddForm;
+
