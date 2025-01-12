@@ -34,7 +34,7 @@ const Student = (props:IProps)=>{
         <div className="label">Age:</div> {props.age}
       </p>
       <p>
-        <div className="label">Is Graduated:</div> {props.isGraduate.toString()}
+        <div className="label" style={{color:props.isGraduate?"green":'red'}}>Is Graduated:</div> {props.isGraduate.toString()}
       </p>
       <p>
         <div className="label">Absents:</div> {abs}

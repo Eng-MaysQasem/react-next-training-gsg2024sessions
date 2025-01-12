@@ -76,7 +76,7 @@ return (
         <CoursesListForm onSubmit={handelCoursesChange} />
       </div>
       <div className="Actions">
-        <button onClick={handelSubmit}>Submit</button>
+        <button onClick={handelSubmit} style={{backgroundColor:errorList.length?'red':'green'}}>Submit</button>
         <button onClick={handelClear}>Clear</button>
       </div>
       
