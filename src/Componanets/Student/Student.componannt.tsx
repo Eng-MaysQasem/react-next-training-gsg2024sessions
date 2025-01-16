@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CoursesList from '../CoursesList/CoursesList.Componants';
 import'./Student.css'
 import { Istudent } from '../../types';
@@ -9,6 +9,9 @@ interface IProps{
   list:string[],
   onAbsentChange:(name:string ,abs:number)=>void;
 }
+useEffect(()=>{
+  console.log("hello from student componnant")
+},[]);
 const Student = (props:IProps)=>{
   //let abs=0;
   const[abs,setAbs]=useState(0);

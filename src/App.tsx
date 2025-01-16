@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Student from "./Componanets/Student/Student.componannt";
 import { Istudent } from "./types";
@@ -37,41 +37,52 @@ const Initaial_List: Array<Istudent> = [
   },
 ];
 
-interface Istudent {
-  id: string;
-  name: string;
-  age: number;
-  isGraduate: boolean;
-  courseList: string[];
-}
-
 function App() {
   const [studentsList, setStudentsList] = useState<Istudent[]>(Initaial_List);
-  const[totalAbsent,setTotalAbsent]=useState(0);
-  const removeLast = () => {
-    const newList = [...studentsList]; //shallow copy
-    newList.pop();
-    //newList.shift(); to remove first
-    setStudentsList(newList);
-  };
-  const handelAbsentChange=(name:string ,abs:number)=>{
-    console.log("[App.tsx]absent changed");
-    console.log(`${name}:${abs}`);
-    setTotalAbsent(totalAbsent+abs);
-  }
-  const Handeladdstudent=(newStudent:Istudent)=>{
-   // console.log(newStudent)
-    setStudentsList([newStudent,...studentsList]);
+  const [totalAbsent, setTotalAbsent] = useState(0);
 
-  }
+  const dataChange = (newData: Istudent[]) => {
+    localStorage.setItem("student-list", JSON.stringify(newData));
+  };
+
+  const Handeladdstudent = (newStudent: Istudent) => {
+    setStudentsList([newStudent, ...studentsList]);
+    dataChange([newStudent, ...studentsList]);
+  };
+
+  const removeLast = () => {
+    const newList = [...studentsList]; // shallow copy
+    newList.pop();
+    setStudentsList(newList);
+    dataChange(newList);
+  };
+
+  const handelAbsentChange = (name: string, abs: number) => {
+    console.log("[App.tsx] Absent changed");
+    console.log(`${name}: ${abs}`);
+    setTotalAbsent(totalAbsent + abs);
+  };
+
+  useEffect(() => {
+    console.log("Hello from App");
+    
+    const newStudent: Istudent = {
+      id: "5",
+      name: "New Student",
+      age: 20,
+      isGraduate: false,
+      courseList: ["React", "CSS"],
+    };
+    Handeladdstudent(newStudent);
+  }, []); 
 
   return (
     <>
       <h1>Welcome to GSG course</h1>
-      <AddForm  onSubmit={Handeladdstudent}/>
+      <AddForm onSubmit={Handeladdstudent} />
       <button onClick={removeLast}>Remove Last Student</button>
-      <b>totalAbsent{totalAbsent}</b>
-   
+      <b>Total Absent: {totalAbsent}</b>
+
       {studentsList.map((student) => (
         <Student
           key={student.id}
