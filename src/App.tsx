@@ -32,7 +32,7 @@ const Initaial_List: Array<Istudent> = [
     id: "4",
     name: "Rahaf Qasem",
     age: 81,
-    isGraduate: !false,
+    isGraduate: true,
     courseList: CoursesList,
   },
 ];
@@ -42,16 +42,17 @@ function App() {
   const [totalAbsent, setTotalAbsent] = useState(0);
 
   const dataChange = (newData: Istudent[]) => {
-    localStorage.setItem("student-list", JSON.stringify(newData));
+    localStorage.setItem("students-list", JSON.stringify(newData));
   };
 
   const Handeladdstudent = (newStudent: Istudent) => {
-    setStudentsList([newStudent, ...studentsList]);
-    dataChange([newStudent, ...studentsList]);
+    const updatedList = [newStudent, ...studentsList];
+    setStudentsList(updatedList);
+    dataChange(updatedList);
   };
 
   const removeLast = () => {
-    const newList = [...studentsList]; // shallow copy
+    const newList = [...studentsList];
     newList.pop();
     setStudentsList(newList);
     dataChange(newList);
@@ -64,17 +65,12 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("Hello from App");
-    
-    const newStudent: Istudent = {
-      id: "5",
-      name: "New Student",
-      age: 20,
-      isGraduate: false,
-      courseList: ["React", "CSS"],
-    };
-    Handeladdstudent(newStudent);
-  }, []); 
+    console.log("Hello from APP component!");
+    const storedData: Istudent[] = JSON.parse(
+      localStorage.getItem("students-list") || "[]"
+    );
+    setStudentsList(storedData.length > 0 ? storedData : Initaial_List);
+  }, []);
 
   return (
     <>
@@ -98,3 +94,4 @@ function App() {
 }
 
 export default App;
+

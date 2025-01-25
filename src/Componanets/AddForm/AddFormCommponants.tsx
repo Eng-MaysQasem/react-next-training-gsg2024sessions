@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./AddForm.css";
 import { Istudent } from "../../types";
 import CoursesListForm from "../Courses-ListForm/CoursesListForm.componants";
@@ -17,6 +17,7 @@ const AddForm = (props: Iprops) => {
     courseList: [],
   });
   const [errorList, setErrorList] = useState<string[]>([]);
+  const [studentsList, setStudentsList] = useState<Istudent[]>([]);
 
   const handelChange = (field: keyof Istudent, value: any) => {
     setStudent({ ...student, [field]: value });
@@ -32,16 +33,35 @@ const AddForm = (props: Iprops) => {
       setErrorList([]);
       props.onSubmit(newStudent);
       handelClear();
+
+      // تحديث studentsList مع الطالب الجديد
+      const updatedStudentsList = [...studentsList, newStudent];
+      setStudentsList(updatedStudentsList);
+
+      // تخزين updatedStudentsList في localStorage
+      localStorage.setItem("students-list", JSON.stringify(updatedStudentsList));
+      console.log("Data saved to localStorage:", updatedStudentsList);
     }
   };
 
   const handelClear = () => {
     setStudent({ id: "", name: "", age: 0, isGraduate: false, courseList: [] });
   };
+
   const handelCoursesChange = (courseList: string[]) => {
     setStudent({ ...student, courseList });
   };
-return (
+
+  const storeData = (newData: Istudent[]) => {
+    localStorage.setItem("students-list", JSON.stringify(newData));
+    console.log("Data saved to localStorage:", newData);
+  };
+
+  useEffect(() => {
+    storeData(studentsList); // update when studentsList change
+  }, [studentsList]);
+
+  return (
     <div className="container">
       <div>
         <label htmlFor="name">Student Name:</label>
@@ -76,10 +96,15 @@ return (
         <CoursesListForm onSubmit={handelCoursesChange} />
       </div>
       <div className="Actions">
-        <button onClick={handelSubmit} style={{backgroundColor:errorList.length?'red':'green'}}>Submit</button>
+        <button
+          onClick={handelSubmit}
+          style={{ backgroundColor: errorList.length ? "red" : "green" }}
+        >
+          Submit
+        </button>
         <button onClick={handelClear}>Clear</button>
       </div>
-      
+
       {Boolean(errorList.length) && (
         <div>
           <h4>You have the following errors:</h4>
@@ -93,4 +118,3 @@ return (
 };
 
 export default AddForm;
-
