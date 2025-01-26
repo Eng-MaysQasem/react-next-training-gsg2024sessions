@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useLocalStorage = (state: any, storageKey: string) => {
-  const [storedData, setStoredData] = useState<any>();
+  const [storedData, setStoredData] = useState<any>(state); // initial state
 
   useEffect(() => {
-    // Read the data on the first render
     const strData = localStorage.getItem(storageKey);
-
-    try {
-      if (strData !== null) {
+    if (strData !== null) {
+      try {
         setStoredData(JSON.parse(strData));
-      } else {
-        setStoredData(null);
+      } catch {
+        setStoredData(strData);
       }
-    } catch (error) {
-      setStoredData(strData);
     }
-  }, []);
+  }, [storageKey]);
 
   useEffect(() => {
     if (typeof state === 'object') {
@@ -24,9 +20,9 @@ const useLocalStorage = (state: any, storageKey: string) => {
     } else {
       localStorage.setItem(storageKey, state.toString());
     }
-  }, [state]);
+  }, [state, storageKey]);
 
-  return storedData;
+  return { storedData, setStoredData };
 };
 
 export default useLocalStorage;
