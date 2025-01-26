@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "./AddForm.css";
 import { Istudent } from "../../types";
 import CoursesListForm from "../Courses-ListForm/CoursesListForm.componants";
@@ -16,8 +16,18 @@ const AddForm = (props: Iprops) => {
     isGraduate: false,
     courseList: [],
   });
-  const [errorList, setErrorList] = useState<string[]>([]);
   const [studentsList, setStudentsList] = useState<Istudent[]>([]);
+  const [errorList, setErrorList] = useState<string[]>([]);
+
+  // Using useMemo to avoid recalculating errors on every render
+  const memoizedErrorList = useMemo(() => validateStudent(student), [student]);
+
+  // Automatically clear errors whenever student data changes
+  useEffect(() => {
+    if (errorList.length > 0) {
+      setErrorList([]); // Clear errors
+    }
+  }, [student]);
 
   const handelChange = (field: keyof Istudent, value: any) => {
     setStudent({ ...student, [field]: value });
@@ -25,20 +35,15 @@ const AddForm = (props: Iprops) => {
 
   const handelSubmit = () => {
     const newStudent: Istudent = { ...student, id: Date.now().toString() };
-    const errors = validateStudent(newStudent);
 
-    if (errors.length > 0) {
-      setErrorList(errors);
+    if (memoizedErrorList.length > 0) {
+      setErrorList(memoizedErrorList);
     } else {
-      setErrorList([]);
       props.onSubmit(newStudent);
       handelClear();
 
-      // تحديث studentsList مع الطالب الجديد
       const updatedStudentsList = [...studentsList, newStudent];
       setStudentsList(updatedStudentsList);
-
-      // تخزين updatedStudentsList في localStorage
       localStorage.setItem("students-list", JSON.stringify(updatedStudentsList));
       console.log("Data saved to localStorage:", updatedStudentsList);
     }
@@ -58,7 +63,7 @@ const AddForm = (props: Iprops) => {
   };
 
   useEffect(() => {
-    storeData(studentsList); // update when studentsList change
+    storeData(studentsList); // Update when studentsList changes
   }, [studentsList]);
 
   return (
@@ -98,7 +103,7 @@ const AddForm = (props: Iprops) => {
       <div className="Actions">
         <button
           onClick={handelSubmit}
-          style={{ backgroundColor: errorList.length ? "red" : "green" }}
+          style={{ backgroundColor: memoizedErrorList.length ? "red" : "green" }}
         >
           Submit
         </button>
