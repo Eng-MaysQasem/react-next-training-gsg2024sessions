@@ -18,6 +18,7 @@ This repository is part of the React & Next.js training sessions at GSG for 2024
   - Form Validation.
   - Conditional Rendering.
   - UseEffect.
+  - useMemo.
 
 ---
 
