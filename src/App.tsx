@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Student from "./Componanets/Student/Student.componannt";
 import { Istudent } from "./types";
 import AddForm from "./Componanets/AddForm/AddFormCommponants";
-import useLocalStorage from "./hooks/localStorage.hooks"; // استدعاء الكستم هوك
+import useLocalStorage from "./hooks/localStorage.hooks"; 
 
 const CoursesList = ["React", "HTML", "CSS"];
+
 
 const Initaial_List: Array<Istudent> = [
   {
@@ -39,7 +40,7 @@ const Initaial_List: Array<Istudent> = [
 ];
 
 function App() {
-  // استخدام الـ custom hook
+  // custom hook
   const { storedData: studentsList, setStoredData } = useLocalStorage(Initaial_List, "students-list");
   const [totalAbsent, setTotalAbsent] = useState(0);
 
@@ -51,6 +52,7 @@ function App() {
     const updatedList = [newStudent, ...studentsList];
     dataChange(updatedList);
   };
+  const lastStdRef=useRef<HTMLDivElement>(null);
 
   const removeLast = () => {
     const newList = [...studentsList];
@@ -61,12 +63,22 @@ function App() {
   const handelAbsentChange = (name: string, abs: number) => {
     setTotalAbsent(totalAbsent + abs);
   };
+  const scrollToLast= () =>{
+    if(lastStdRef.current){
+      lastStdRef.current.scrollIntoView({behavior:"smooth"});}
+    }
+   
+
 
   return (
     <>
       <h1>Welcome to GSG course</h1>
       <AddForm onSubmit={Handeladdstudent} />
       <button onClick={removeLast}>Remove Last Student</button>
+      <button onClick={scrollToLast}>scroll</button>
+
+   
+   
       <b>Total Absent: {totalAbsent}</b>
 
       {studentsList.map((student) => (
@@ -79,8 +91,10 @@ function App() {
           onAbsentChange={handelAbsentChange}
         />
       ))}
+  <div ref={lastStdRef}></div>
     </>
-  );
-}
+   
+  );}
+
 
 export default App;
