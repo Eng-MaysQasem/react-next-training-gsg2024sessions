@@ -1,86 +1,58 @@
-import { useState, useEffect, useRef } from "react";
+import { useReducer, useEffect, useRef } from "react";
 import "./App.css";
 import Student from "./Componanets/Student/Student.componannt";
 import { Istudent } from "./types";
 import AddForm from "./Componanets/AddForm/AddFormCommponants";
-import useLocalStorage from "./hooks/localStorage.hooks"; 
+import useLocalStorage from "./hooks/localStorage.hooks";
+import { reducer, initialState, ADD_STUDENT, REMOVE_LAST_STUDENT, UPDATE_ABSENT } from "../src/state/reducer"; // Importing the reducer
 
 const CoursesList = ["React", "HTML", "CSS"];
 
-
-const Initaial_List: Array<Istudent> = [
-  {
-    id: "1",
-    name: "Mays Qasem",
-    age: 23,
-    isGraduate: true,
-    courseList: ["e1", "e2", "a1", "a3"],
-  },
-  {
-    id: "2",
-    name: "Areej Qasem",
-    age: 21,
-    isGraduate: false,
-    courseList: CoursesList,
-  },
-  {
-    id: "3",
-    name: "Sama Qasem",
-    age: 16,
-    isGraduate: false,
-    courseList: ["css", "e2"],
-  },
-  {
-    id: "4",
-    name: "Rahaf Qasem",
-    age: 81,
-    isGraduate: true,
-    courseList: CoursesList,
-  },
-];
-
 function App() {
-  // custom hook
-  const { storedData: studentsList, setStoredData } = useLocalStorage(Initaial_List, "students-list");
-  const [totalAbsent, setTotalAbsent] = useState(0);
+  // Using the useReducer hook with the reducer and initial state
+  const [state, dispatch] = useReducer(reducer, initialState); 
 
-  const dataChange = (newData: Istudent[]) => {
-    setStoredData(newData);
-  };
+  // Custom hook to persist student data in local storage
+  const { storedData: studentsList, setStoredData } = useLocalStorage(state.studentsList, "students-list");
+  
+  const lastStdRef = useRef<HTMLDivElement>(null);
 
-  const Handeladdstudent = (newStudent: Istudent) => {
-    const updatedList = [newStudent, ...studentsList];
-    dataChange(updatedList);
-  };
-  const lastStdRef=useRef<HTMLDivElement>(null);
-
-  const removeLast = () => {
-    const newList = [...studentsList];
-    newList.pop();
-    dataChange(newList);
-  };
-
+  // Function to handle absence changes and dispatch the action to update the total absents
   const handelAbsentChange = (name: string, abs: number) => {
-    setTotalAbsent(totalAbsent + abs);
+    dispatch({ type: UPDATE_ABSENT, payload: abs });
   };
-  const scrollToLast= () =>{
-    if(lastStdRef.current){
-      lastStdRef.current.scrollIntoView({behavior:"smooth"});}
-    }
-   
 
+  // Function to handle adding a new student and dispatch the action to add the student to the list
+  const Handeladdstudent = (newStudent: Istudent) => {
+    dispatch({ type: ADD_STUDENT, payload: newStudent });
+  };
+
+  // Function to remove the last student from the list and dispatch the action
+  const removeLast = () => {
+    dispatch({ type: REMOVE_LAST_STUDENT });
+  };
+
+  // Function to scroll to the last student
+  const scrollToLast = () => {
+    if (lastStdRef.current) {
+      lastStdRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // useEffect hook to update the local storage whenever the students list changes
+  useEffect(() => {
+    setStoredData(state.studentsList); // Save updated students list to local storage
+  }, [state.studentsList, setStoredData]);
 
   return (
     <>
       <h1>Welcome to GSG course</h1>
-      <AddForm onSubmit={Handeladdstudent} />
+      <AddForm onSubmit={Handeladdstudent} /> {/* Form to add a new student */}
       <button onClick={removeLast}>Remove Last Student</button>
       <button onClick={scrollToLast}>scroll</button>
+      <b>Total Absent: {state.totalAbsent}</b>
 
-   
-   
-      <b>Total Absent: {totalAbsent}</b>
-
+      {/* Rendering the list of students */}
       {studentsList.map((student) => (
         <Student
           key={student.id}
@@ -88,13 +60,12 @@ function App() {
           age={student.age}
           isGraduate={student.isGraduate}
           list={student.courseList}
-          onAbsentChange={handelAbsentChange}
+          onAbsentChange={handelAbsentChange}  // Passing the absence change handler as prop
         />
       ))}
-  <div ref={lastStdRef}></div>
+      <div ref={lastStdRef}></div>
     </>
-   
-  );}
-
+  );
+}
 
 export default App;

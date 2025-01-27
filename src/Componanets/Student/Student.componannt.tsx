@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CoursesList from "../CoursesList/CoursesList.Componants";
 import "./Student.css";
 import { Istudent } from "../../types";
@@ -39,6 +39,7 @@ const Student = (props: IProps) => {
     setAbs(0);
     onAbsentChange(name, -abs);
   };
+ 
 
   return (
     <div className="std-wrapper">
