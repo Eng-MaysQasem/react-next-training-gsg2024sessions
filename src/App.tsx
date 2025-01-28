@@ -1,19 +1,17 @@
-import { useEffect, useRef, useReducer, useState } from "react";
-import "./App.css";
-import Student from "../src/Componanets/Student/Student.componannt";
-import AddForm from "../src/Componanets/AddForm/AddFormCommponants";
-import { reducer, initialState, ADD_STUDENT, REMOVE_LAST_STUDENT, UPDATE_ABSENT } from "../src/state/Reducer";
+import React, { useState, useEffect, useRef, useReducer } from "react";
+import Main from "../src/Screens/Main.Screens";
+import About from "../src/Screens/About.Screens";
+import NotFound from "../src/Screens/NotFound.Screens";
+import { reducer, initialState, ADD_STUDENT, REMOVE_LAST_STUDENT, UPDATE_ABSENT } from "./state/Reducer";
 import useLocalStorage from "./hooks/localStorage.hooks";
-
-const CoursesList = ["React", "HTML", "CSS"];
+import './App.css';
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { storedData: studentsList, setStoredData } = useLocalStorage(state.studentsList, "students-list");
-  const lastStdRef = useRef<HTMLDivElement>(null);
+  const [currentPage, setCurrentPage] = useState("main");
 
   const handelAbsentChange = (name: string, abs: number) => {
-    console.log(`Absents updated for ${name}: ${abs}`);
     dispatch({ type: UPDATE_ABSENT, payload: abs });
   };
 
@@ -35,48 +33,37 @@ function App() {
     setStoredData(state.studentsList);
   }, [state.studentsList, setStoredData]);
 
-  const [currentPage, setCurrentPage] = useState("main");
+  const handleNavigation = (page: string) => {
+    setCurrentPage(page);
+  };
 
   return (
-    <>
+    <div className="app-container">
       <h1>Welcome to GSG course</h1>
       <nav>
-        <button onClick={() => setCurrentPage("main")}>Home Page</button>
-        <button onClick={() => setCurrentPage("about")}>About Us Page</button>
-        <button onClick={() => setCurrentPage("random")}>Invalid Page</button> {/* لتجربة 404 */}
+        <a href="/main" onClick={(e) => { e.preventDefault(); handleNavigation("main"); }}>Home Page</a>
+        <a href="/about" onClick={(e) => { e.preventDefault(); handleNavigation("about"); }}>About Us Page</a>
+        <a href="/random" onClick={(e) => { e.preventDefault(); handleNavigation("random"); }}>Invalid Page</a> {/* لتجربة 404 */}
       </nav>
 
-      {currentPage === "main" ? (
-        <>
-          <AddForm onSubmit={Handeladdstudent} />
-          <button onClick={removeLast}>Remove Last Student</button>
-          <button onClick={scrollToLast}>Scroll</button>
-          <b>Total Absent: {state.totalAbsent}</b>
-
-          {studentsList.map((student) => (
-            <Student
-              key={student.id}
-              name={student.name}
-              age={student.age}
-              isGraduate={student.isGraduate}
-              list={student.courseList}
-              onAbsentChange={handelAbsentChange}
-            />
-          ))}
-          <div ref={lastStdRef}></div>
-        </>
-      ) : currentPage === "about" ? (
-        <>
-          <h1>About Us</h1>
-          <p>This application is designed to manage students and their absences.</p>
-        </>
-      ) : (
-        <>
-          <h1>Error 404</h1>
-          <p>The page you are looking for does not exist.</p>
-        </>
-      )}
-    </>
+      <div className="content">
+        {currentPage === "main" ? (
+          <Main
+            state={state}
+            dispatch={dispatch}
+            studentsList={studentsList}
+            handelAbsentChange={handelAbsentChange}
+            Handeladdstudent={Handeladdstudent}
+            removeLast={removeLast}
+            scrollToLast={scrollToLast}
+          />
+        ) : currentPage === "about" ? (
+          <About />
+        ) : (
+          <NotFound />
+        )}
+      </div>
+    </div>
   );
 }
 
