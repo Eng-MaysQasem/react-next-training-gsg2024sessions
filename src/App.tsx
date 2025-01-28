@@ -1,68 +1,61 @@
-import React, { useState, useEffect, useRef, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import Main from "../src/Screens/Main.Screens";
 import About from "../src/Screens/About.Screens";
 import NotFound from "../src/Screens/NotFound.Screens";
-import { reducer, initialState, ADD_STUDENT, REMOVE_LAST_STUDENT, UPDATE_ABSENT } from "./state/Reducer";
+import {
+  reducer,
+  initialState,
+  ADD_STUDENT,
+  REMOVE_LAST_STUDENT,
+  UPDATE_ABSENT,
+} from "./state/Reducer";
 import useLocalStorage from "./hooks/localStorage.hooks";
-import './App.css';
+import "./App.css";
 
 function App() {
+  // State Management
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { storedData: studentsList, setStoredData } = useLocalStorage(state.studentsList, "students-list");
-  const [currentPage, setCurrentPage] = useState("main");
+  const { storedData: studentsList, setStoredData } = useLocalStorage(
+    state.studentsList,
+    "students-list"
+  );
 
-  const handelAbsentChange = (name: string, abs: number) => {
+  // Handlers
+  const handleAbsentChange = (name, abs) => {
     dispatch({ type: UPDATE_ABSENT, payload: abs });
   };
 
-  const Handeladdstudent = (newStudent: Istudent) => {
+  const handleAddStudent = (newStudent) => {
     dispatch({ type: ADD_STUDENT, payload: newStudent });
   };
 
-  const removeLast = () => {
+  const handleRemoveLastStudent = () => {
     dispatch({ type: REMOVE_LAST_STUDENT });
-  };
-
-  const scrollToLast = () => {
-    if (lastStdRef.current) {
-      lastStdRef.current.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   useEffect(() => {
     setStoredData(state.studentsList);
   }, [state.studentsList, setStoredData]);
 
-  const handleNavigation = (page: string) => {
-    setCurrentPage(page);
-  };
-
+  // JSX
   return (
     <div className="app-container">
-      <h1>Welcome to GSG course</h1>
-      <nav>
-        <a href="/main" onClick={(e) => { e.preventDefault(); handleNavigation("main"); }}>Home Page</a>
-        <a href="/about" onClick={(e) => { e.preventDefault(); handleNavigation("about"); }}>About Us Page</a>
-        <a href="/random" onClick={(e) => { e.preventDefault(); handleNavigation("random"); }}>Invalid Page</a> {/* لتجربة 404 */}
-      </nav>
+      <h1>Welcome to GSG Course</h1>
 
-      <div className="content">
-        {currentPage === "main" ? (
-          <Main
-            state={state}
-            dispatch={dispatch}
-            studentsList={studentsList}
-            handelAbsentChange={handelAbsentChange}
-            Handeladdstudent={Handeladdstudent}
-            removeLast={removeLast}
-            scrollToLast={scrollToLast}
-          />
-        ) : currentPage === "about" ? (
-          <About />
-        ) : (
-          <NotFound />
-        )}
-      </div>
+      <BrowserRouter>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/about">About Us</Link>
+          <Link to="/random">Invalid Page</Link> {/* Test 404 */}
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} /> {/* Handle 404 */}
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
