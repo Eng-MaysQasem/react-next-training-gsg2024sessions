@@ -33,7 +33,7 @@ const Main = () => {
 
   return (
     <>
-      <h1>Welcome to GSG course</h1>
+ 
       <AddForm onSubmit={Handeladdstudent} />
       <button onClick={removeLast}>Remove Last Student</button>
       <button onClick={scrollToLast}>Scroll</button>
