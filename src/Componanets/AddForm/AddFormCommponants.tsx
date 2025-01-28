@@ -1,70 +1,22 @@
-import { useState, useEffect, useMemo } from "react";
 import "./AddForm.css";
 import { Istudent } from "../../types";
 import CoursesListForm from "../Courses-ListForm/CoursesListForm.componants";
-import { validateStudent } from "../../ulills/Validation";
+import useAddForm from "../../hooks/AddForm";
 
-interface Iprops {
+interface IProps {
   onSubmit: (std: Istudent) => void;
 }
 
-const AddForm = (props: Iprops) => {
-  const [student, setStudent] = useState<Istudent>({
-    id: "",
-    name: "",
-    age: 0,
-    isGraduate: false,
-    courseList: [],
-  });
-  const [studentsList, setStudentsList] = useState<Istudent[]>([]);
-  const [errorList, setErrorList] = useState<string[]>([]);
-
-  // Using useMemo to avoid recalculating errors on every render
-  const memoizedErrorList = useMemo(() => validateStudent(student), [student]);
-
-  // Automatically clear errors whenever student data changes
-  useEffect(() => {
-    if (errorList.length > 0) {
-      setErrorList([]); // Clear errors
-    }
-  }, [student]);
-
-  const handelChange = (field: keyof Istudent, value: any) => {
-    setStudent({ ...student, [field]: value });
-  };
-
-  const handelSubmit = () => {
-    const newStudent: Istudent = { ...student, id: Date.now().toString() };
-
-    if (memoizedErrorList.length > 0) {
-      setErrorList(memoizedErrorList);
-    } else {
-      props.onSubmit(newStudent);
-      handelClear();
-
-      const updatedStudentsList = [...studentsList, newStudent];
-      setStudentsList(updatedStudentsList);
-      localStorage.setItem("students-list", JSON.stringify(updatedStudentsList));
-      console.log("Data saved to localStorage:", updatedStudentsList);
-    }
-  };
-
-  const handelClear = () => {
-    setStudent({ id: "", name: "", age: 0, isGraduate: false, courseList: [] });
-  };
-
-  const handelCoursesChange = (courseList: string[]) => {
-    setStudent({ ...student, courseList });
-  };
-
-  const storeData = (newData: Istudent[]) => {
-    localStorage.setItem("students-list", JSON.stringify(newData));
-    console.log("Data saved to localStorage:", newData);
-  };
-
-  useEffect(() => {
-    storeData(studentsList); // Update when studentsList changes
-  }, [studentsList]);
+const AddForm = (props: IProps) => {
+  const {
+    student,
+    errorList,
+    memoizedErrorList,
+    handleChange,
+    handleSubmit,
+    handleClear,
+    handleCoursesChange,
+  } = useAddForm({ onSubmit: props.onSubmit });
 
   return (
     <div className="container">
@@ -74,7 +26,7 @@ const AddForm = (props: Iprops) => {
           id="name"
           type="text"
           value={student.name}
-          onChange={(e) => handelChange("name", e.target.value)}
+          onChange={(e) => handleChange("name", e.target.value)}
         />
       </div>
       <div>
@@ -85,7 +37,7 @@ const AddForm = (props: Iprops) => {
           max={30}
           min={17}
           value={student.age}
-          onChange={(e) => handelChange("age", Number(e.target.value))}
+          onChange={(e) => handleChange("age", Number(e.target.value))}
         />
       </div>
       <div>
@@ -94,20 +46,20 @@ const AddForm = (props: Iprops) => {
           id="isGraduate"
           type="checkbox"
           checked={student.isGraduate}
-          onChange={(e) => handelChange("isGraduate", e.target.checked)}
+          onChange={(e) => handleChange("isGraduate", e.target.checked)}
         />
       </div>
       <div>
-        <CoursesListForm onSubmit={handelCoursesChange} />
+        <CoursesListForm onSubmit={handleCoursesChange} />
       </div>
       <div className="Actions">
         <button
-          onClick={handelSubmit}
+          onClick={handleSubmit}
           style={{ backgroundColor: memoizedErrorList.length ? "red" : "green" }}
         >
           Submit
         </button>
-        <button onClick={handelClear}>Clear</button>
+        <button onClick={handleClear}>Clear</button>
       </div>
 
       {Boolean(errorList.length) && (

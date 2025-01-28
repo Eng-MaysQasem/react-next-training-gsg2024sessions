@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CoursesList from "../CoursesList/CoursesList.Componants";
 import "./Student.css";
-import { Istudent } from "../../types";
 
 interface IProps {
   name: string;
@@ -17,29 +16,23 @@ const Student = (props: IProps) => {
   const [abs, setAbs] = useState(0);
 
   useEffect(() => {
-    console.log("hello from student component");
+    console.log("Student component mounted for:", name);
 
     return () => {
-//this code will be excute when unmount
-      console.log(`student: ${name} has been deleted`);
+      console.log(`Student: ${name} has been removed`);
     };
   }, [name]);
 
-  const addAbsent = () => {
-    setAbs(abs + 1);
-    onAbsentChange(name, abs + 1);
-  };
+  const handleAbsentChange = (operation: "add" | "remove" | "reset") => {
+    let newAbs = abs;
 
-  const removeAbsent = () => {
-    setAbs(abs - 1);
-    onAbsentChange(name, abs - 1);
-  };
+    if (operation === "add") newAbs = abs + 1;
+    else if (operation === "remove") newAbs = Math.max(0, abs - 1);
+    else if (operation === "reset") newAbs = 0;
 
-  const resetAbsent = () => {
-    setAbs(0);
-    onAbsentChange(name, -abs);
+    setAbs(newAbs);
+    onAbsentChange(name, newAbs);
   };
- 
 
   return (
     <div className="std-wrapper">
@@ -61,9 +54,9 @@ const Student = (props: IProps) => {
       <p>
         <div className="label">Absents:</div> {abs}
       </p>
-      <button onClick={addAbsent}>+</button>
-      <button onClick={resetAbsent}>Reset Absent</button>
-      <button onClick={removeAbsent}>-</button>
+      <button onClick={() => handleAbsentChange("add")}>+</button>
+      <button onClick={() => handleAbsentChange("reset")}>Reset Absent</button>
+      <button onClick={() => handleAbsentChange("remove")}>-</button>
 
       <CoursesList list={list} />
       <hr />
@@ -72,3 +65,4 @@ const Student = (props: IProps) => {
 };
 
 export default Student;
+
