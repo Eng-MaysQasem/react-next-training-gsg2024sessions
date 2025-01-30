@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import CoursesList from "../CoursesList/CoursesList.Componants";
 import "./Student.css";
 
 interface IProps {
+  id: string;
   name: string;
   age: number;
   isGraduate: boolean;
   list: string[];
-  onAbsentChange: (name: string, abs: number) => void;
+  onAbsentChange: (id: string, abs: number) => void;
 }
 
 const Student = (props: IProps) => {
-  const { name, age, isGraduate, list, onAbsentChange } = props;
-
+  const { id, name, age, isGraduate, list, onAbsentChange } = props;
   const [abs, setAbs] = useState(0);
 
   useEffect(() => {
@@ -31,13 +32,16 @@ const Student = (props: IProps) => {
     else if (operation === "reset") newAbs = 0;
 
     setAbs(newAbs);
-    onAbsentChange(name, newAbs);
+    onAbsentChange(id, newAbs);
   };
 
   return (
     <div className="std-wrapper">
       <p>
-        <div className="label">Student Name:</div> {name.toLocaleUpperCase()}
+        <div className="label">Student Name:</div>
+        <Link to={`/student/${id}`} style={{ textDecoration: "none", color: "blue" }}>
+          {name.toLocaleUpperCase()}
+        </Link>
       </p>
       <p>
         <div className="label">Age:</div> {age}
@@ -65,4 +69,3 @@ const Student = (props: IProps) => {
 };
 
 export default Student;
-

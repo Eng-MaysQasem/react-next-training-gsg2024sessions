@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import Main from "../src/Screens/Main.Screens";
 import About from "../src/Screens/About.Screens";
 import NotFound from "../src/Screens/NotFound.Screens";
+import StudentDetails from "./Screens/StudentDetails.Screens";
 import {
   reducer,
   initialState,
@@ -12,6 +13,7 @@ import {
 } from "./state/Reducer";
 import useLocalStorage from "./hooks/localStorage.hooks";
 import "./App.css";
+
 
 function App() {
   // State Management
@@ -54,6 +56,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} /> {/* Handle 404 */}
+          <Route path="/student/:id" element={<StudentDetails/>}/>
         </Routes>
       </BrowserRouter>
     </div>
