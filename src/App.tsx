@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link,useLocation } from "react-router-dom";
 import Main from "../src/Screens/Main.Screens";
 import About from "../src/Screens/About.Screens";
 import NotFound from "../src/Screens/NotFound.Screens";
@@ -40,17 +40,17 @@ function App() {
     setStoredData(state.studentsList);
   }, [state.studentsList, setStoredData]);
 
-  // JSX
+  const location = useLocation();
   return (
     <div className="app-container">
       <h1>Welcome to GSG Course</h1>
 
-      <BrowserRouter>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/random">Invalid Page</Link> {/* Test 404 */}
-        </nav>
+   
+      <nav>
+      <Link to="/" className={location.pathname === "/" ? "active" : ""}>Home</Link>
+      <Link to="/about" className={location.pathname === "/about" ? "active" : ""}>About Us</Link>
+      <Link to="/random" className={location.pathname === "/random" ? "active" : ""}>Invalid Page</Link>
+    </nav>
 
         <Routes>
           <Route path="/" element={<Main />} />
@@ -58,7 +58,7 @@ function App() {
           <Route path="*" element={<NotFound />} /> {/* Handle 404 */}
           <Route path="/student/:id" element={<StudentDetails/>}/>
         </Routes>
-      </BrowserRouter>
+   
     </div>
   );
 }

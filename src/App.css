@@ -8,3 +8,20 @@
 a{
   margin: 15px;
 }
+nav {
+  display: flex;
+  gap: 15px;
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  padding: 5px 10px;
+}
+
+nav a.active {
+  border-bottom: 3px solid blue; 
+  font-weight: bold;
+  color: blue;
+}
